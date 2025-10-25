@@ -4,6 +4,7 @@ const transactionSchema = new mongoose.Schema({
   order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
   type: { type: String, enum: ["Sale", "Purchase", "Expense"], required: true },
   amount: { type: Number, required: true },
+  status: { type: String, enum: ["success", "pending", "failed"], default: "success" },
   date: { type: Date, default: Date.now },
   description: String
 }, { timestamps: true });

@@ -8,6 +8,7 @@ router.get('/', transactionController.getTransactions);
 router.get('/:id', transactionController.getTransactionById);
 router.post('/', transactionController.createTransaction);
 router.put('/:id', transactionController.updateTransaction);
+router.put('/:id/status', transactionController.updateTransactionStatus);
 router.delete('/:id', transactionController.deleteTransaction);
 
 export default router;

@@ -6,11 +6,11 @@ const partController = {
   getParts: async (req, res) => {
     try {
       const parts = await Part.find()
-        .populate("supplier")
-        .populate("compatibleVehicles")
-        .populate("nutsBolts");
+        .populate("supplier", "name company email contact phone")
+        .populate("compatibleVehicles", "name model type");
       res.json(parts);
     } catch (err) {
+      console.error("Error fetching parts:", err);
       res.status(500).json({ message: "Error fetching parts", error: err.message });
     }
   },
@@ -19,12 +19,12 @@ const partController = {
   getPartById: async (req, res) => {
     try {
       const part = await Part.findById(req.params.id)
-        .populate("supplier")
-        .populate("compatibleVehicles")
-        .populate("nutsBolts");
+        .populate("supplier", "name company email contact phone")
+        .populate("compatibleVehicles", "name model type");
       if (!part) return res.status(404).json({ message: "Part not found" });
       res.json(part);
     } catch (err) {
+      console.error("Error fetching part:", err);
       res.status(500).json({ message: "Error fetching part", error: err.message });
     }
   },
@@ -42,8 +42,14 @@ const partController = {
         });
       }
 
-      res.json(part);
+      // Return populated part
+      const populatedPart = await Part.findById(part._id)
+        .populate("supplier", "name company email contact phone")
+        .populate("compatibleVehicles", "name model type");
+
+      res.json(populatedPart);
     } catch (err) {
+      console.error("Error adding part:", err);
       res.status(400).json({ message: "Error adding part", error: err.message });
     }
   },
@@ -51,10 +57,13 @@ const partController = {
   // UPDATE part
   updatePart: async (req, res) => {
     try {
-      const part = await Part.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      const part = await Part.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .populate("supplier", "name company email contact phone")
+        .populate("compatibleVehicles", "name model type");
       if (!part) return res.status(404).json({ message: "Part not found" });
       res.json(part);
     } catch (err) {
+      console.error("Error updating part:", err);
       res.status(400).json({ message: "Error updating part", error: err.message });
     }
   },
@@ -66,6 +75,7 @@ const partController = {
       if (!part) return res.status(404).json({ message: "Part not found" });
       res.json({ message: "Part deleted successfully" });
     } catch (err) {
+      console.error("Error deleting part:", err);
       res.status(400).json({ message: "Error deleting part", error: err.message });
     }
   }

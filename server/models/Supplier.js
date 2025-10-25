@@ -5,6 +5,7 @@ const supplierSchema = new mongoose.Schema({
   company: String,
   email: String,
   contact: String,
+  phone: String,
   address: String,
   suppliedParts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Part" }]
 }, { timestamps: true });

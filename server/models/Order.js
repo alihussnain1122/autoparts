@@ -8,7 +8,11 @@ const orderSchema = new mongoose.Schema({
     price: Number
   }],
   totalAmount: Number,
-  status: { type: String, default: "Pending" }, // Pending / Completed / Cancelled
+  status: { 
+    type: String, 
+    enum: ["Pending", "Processing", "Completed", "Cancelled"], 
+    default: "Pending" 
+  }, // Pending / Processing / Completed / Cancelled
   orderDate: { type: Date, default: Date.now }
 }, { timestamps: true });
 
